@@ -1,42 +1,40 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AbdulaClick</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <h1>AbdulaClick</h1>
-    <div class="balance" id="balance">0 💰</div>
+    <div class="balance-box">
+      <span id="balance">0</span> 💰
+    </div>
 
     <button id="clickButton">
-      <img src="bearded.png" alt="Click Icon" class="click-icon">
+      <img src="bearded.png" alt="Click Icon" class="click-icon" />
     </button>
 
-    <button id="openShopButton">🛒 Магазин</button>
+    <button id="openShop">🛒 Магазин</button>
 
-    <div class="shop" id="shop" style="display:none;">
-      <button id="backToMain">⬅️ Назад</button>
-      <h2>Магазин</h2>
-      <button class="shop-tab" data-tab="boosts">⚡ Бусты</button>
-      <button class="shop-tab" data-tab="autoclicks">🤖 Автоклики</button>
+    <!-- Модальное окно магазина -->
+    <div id="shopModal" class="modal hidden">
+      <div class="modal-content">
+        <button class="back" id="closeShop">← Назад</button>
+        <h2>Магазин</h2>
+        <div id="shopMenu">
+          <button class="shop-tab" data-tab="boosts">🔥 Бусты</button>
+          <button class="shop-tab" data-tab="autoclick">⚙️ Автоклики</button>
+          <button class="shop-tab" data-tab="skins">🎭 Скинчики</button>
+        </div>
 
-      <div id="boosts" class="shop-tab-content" style="display:none;">
-        <h3>⚡ Бусты</h3>
-        <div class="shop-item" data-cost="10" data-power="1">+1 за 10 💰</div>
-        <div class="shop-item" data-cost="50" data-power="5">+5 за 50 💰</div>
-        <div class="shop-item" data-cost="200" data-power="20">+20 за 200 💰</div>
-      </div>
-
-      <div id="autoclicks" class="shop-tab-content" style="display:none;">
-        <h3>🤖 Автоклики</h3>
-        <div class="autoclick-item" data-cost="1000" data-count="1">+1 автоклик за 1000 💰</div>
-        <div class="autoclick-item" data-cost="3000" data-count="3">+3 автоклика за 3000 💰</div>
+        <div id="shopContent"></div>
       </div>
     </div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
