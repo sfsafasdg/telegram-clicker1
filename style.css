@@ -1,17 +1,14 @@
 body {
   background-color: #121212;
-  color: #fff;
-  font-family: Arial, sans-serif;
+  color: #ffffff;
+  font-family: 'Arial', sans-serif;
   text-align: center;
   padding: 20px;
-  margin: 0;
-  overflow-x: hidden;
 }
 
 .container {
   max-width: 400px;
   margin: 0 auto;
-  position: relative;
 }
 
 h1 {
@@ -34,96 +31,83 @@ h1 {
   border: none;
   outline: none;
   margin: 20px 0;
-  cursor: pointer;
 }
 
 .click-icon {
   width: 150px;
   transition: transform 0.1s ease;
+  cursor: pointer;
 }
 
 .click-icon:active {
   transform: scale(0.95);
 }
 
-/* Кнопка открытия магазина справа сверху */
 .shop-open-btn {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  background: #00ffaa;
+  top: 20px;
+  right: 20px;
+  background-color: #00ffaa;
   border: none;
   padding: 10px 15px;
-  border-radius: 12px;
+  border-radius: 8px;
   color: #000;
   font-weight: bold;
   cursor: pointer;
-  box-shadow: 0 0 10px #00ffaaaa;
-  transition: background 0.3s ease;
+  box-shadow: 0 0 10px #00ffaa;
+  transition: background-color 0.3s ease;
   z-index: 10;
 }
 
 .shop-open-btn:hover {
-  background: #00cc88;
+  background-color: #00cc88;
 }
 
-/* Скрытие элементов */
 .hidden {
-  display: none !important;
-}
-
-/* Магазин */
-#shopScreen {
-  max-width: 400px;
-  margin: 0 auto;
-  text-align: left;
+  display: none;
 }
 
 .shop-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 15px;
+  max-width: 400px;
+  margin: 0 auto 10px auto;
 }
 
-/* Кнопка назад */
 .back-btn {
   background: none;
   border: none;
   color: #00ffaa;
-  font-size: 18px;
+  font-size: 24px;
   cursor: pointer;
-  font-weight: bold;
 }
 
-/* Вкладки магазина */
 .shop-tabs {
   display: flex;
   gap: 10px;
 }
 
 .tab-btn {
-  background: #222;
+  background-color: #222;
   border: 2px solid #00ffaa;
-  padding: 8px 16px;
-  border-radius: 10px;
   color: #fff;
-  font-weight: 600;
+  padding: 8px 15px;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.2s ease;
+  font-weight: bold;
 }
 
 .tab-btn.active,
 .tab-btn:hover {
-  background: #00ffaa;
+  background-color: #00ffaa;
   color: #000;
 }
 
-/* Контент вкладок */
 .shop-content {
-  overflow-y: auto;
-  max-height: 60vh;
-  padding-right: 10px;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .tab-content {
@@ -138,10 +122,10 @@ h1 {
   background-color: #222;
   border: 2px solid #00ffaa;
   color: #fff;
-  padding: 12px 16px;
-  margin: 10px 0;
+  padding: 10px 15px;
+  margin: 5px;
   border-radius: 10px;
-  font-size: 18px;
+  font-size: 16px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
