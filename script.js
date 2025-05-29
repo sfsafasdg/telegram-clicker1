@@ -1,5 +1,5 @@
-let balance = 0;
-let boost = 1;
+let balance = parseInt(localStorage.getItem("balance")) || 0;
+let boost = parseInt(localStorage.getItem("boost")) || 1;
 
 const balanceElem = document.getElementById("balance");
 const clickBtn = document.getElementById("clickButton");
@@ -7,6 +7,8 @@ const audio = new Audio("click.mp3");
 
 function updateBalance() {
   balanceElem.innerText = balance + " 💰";
+  localStorage.setItem("balance", balance);
+  localStorage.setItem("boost", boost);
 }
 
 clickBtn.addEventListener("click", () => {
@@ -77,4 +79,3 @@ document.querySelectorAll(".autoclick-item").forEach(item => {
 });
 
 updateBalance();
-
