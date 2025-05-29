@@ -1,13 +1,9 @@
 let balance = 0;
 let boost = 1;
-let autoClicks = 0;
 
 const balanceElem = document.getElementById("balance");
 const clickBtn = document.getElementById("clickButton");
 const audio = new Audio("click.mp3");
-const shopToggle = document.getElementById("shopToggle");
-const shopModal = document.getElementById("shopModal");
-const closeShop = document.getElementById("closeShop");
 
 function updateBalance() {
   balanceElem.innerText = balance + " 💰";
@@ -20,57 +16,65 @@ clickBtn.addEventListener("click", () => {
   audio.play();
 });
 
-// Автоклики
-setInterval(() => {
-  balance += autoClicks;
-  updateBalance();
-}, 1000);
+// Магазин
+const shopToggle = document.getElementById("shopToggle");
+const shopModal = document.getElementById("shopModal");
+const shopClose = document.getElementById("shopClose");
 
-// Открытие/закрытие магазина
 shopToggle.addEventListener("click", () => {
   shopModal.style.display = "block";
 });
 
-closeShop.addEventListener("click", () => {
+shopClose.addEventListener("click", () => {
   shopModal.style.display = "none";
 });
 
 // Вкладки
-const tabs = document.querySelectorAll(".tab");
-const tabContents = document.querySelectorAll(".tab-content");
+const tabs = document.querySelectorAll(".shop-tab");
+const contents = document.querySelectorAll(".shop-tab-content");
 
 tabs.forEach(tab => {
   tab.addEventListener("click", () => {
-    tabContents.forEach(content => (content.style.display = "none"));
-    const tabId = tab.dataset.tab;
-    document.getElementById(tabId).style.display = "block";
+    contents.forEach(c => c.style.display = "none");
+    const target = document.getElementById(tab.dataset.tab);
+    if (target) target.style.display = "block";
   });
 });
 
-// Покупка бустов и автокликов
-const shopItems = document.querySelectorAll(".shop-item");
-shopItems.forEach(item => {
+// Бусты
+document.querySelectorAll(".shop-item").forEach(item => {
   item.addEventListener("click", () => {
-    const cost = parseInt(item.dataset.cost);
-    if (balance < cost) {
-      alert("❌ Недостаточно средств");
-      return;
-    }
-
-    if (item.dataset.power) {
-      const power = parseInt(item.dataset.power);
+    const cost = parseInt(item.getAttribute("data-cost"));
+    const power = parseInt(item.getAttribute("data-power"));
+    if (balance >= cost) {
+      balance -= cost;
       boost += power;
-      balance -= cost;
+      updateBalance();
       alert(`✅ Куплен буст +${power} за ${cost} 💰`);
-    } else if (item.dataset.autoclick) {
-      const ac = parseInt(item.dataset.autoclick);
-      autoClicks += ac;
-      balance -= cost;
-      alert(`✅ Куплено ${ac} автокликов за ${cost} 💰`);
+    } else {
+      alert("❌ Недостаточно средств");
     }
+  });
+});
 
-    updateBalance();
+// Автоклики
+document.querySelectorAll(".autoclick-item").forEach(item => {
+  item.addEventListener("click", () => {
+    const cost = parseInt(item.getAttribute("data-cost"));
+    const count = parseInt(item.getAttribute("data-count"));
+    if (balance >= cost) {
+      balance -= cost;
+      updateBalance();
+      alert(`✅ Куплено ${count} автокликов`);
+      setInterval(() => {
+        balance += count;
+        updateBalance();
+      }, 1000);
+    } else {
+      alert("❌ Недостаточно средств");
+    }
   });
 });
 
 updateBalance();
+
