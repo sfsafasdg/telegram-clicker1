@@ -27,13 +27,13 @@ clickBtn.addEventListener("click", () => {
   audio.play();
 });
 
-// Открыть магазин — скрыть главный экран, показать магазин
+// Открыть магазин
 openShopBtn.addEventListener("click", () => {
   mainScreen.classList.add("hidden");
   shopScreen.classList.remove("hidden");
 });
 
-// Закрыть магазин — показать главный экран, скрыть магазин
+// Закрыть магазин
 closeShopBtn.addEventListener("click", () => {
   shopScreen.classList.add("hidden");
   mainScreen.classList.remove("hidden");
@@ -81,7 +81,7 @@ shopItems.forEach(item => {
   });
 });
 
-// Автоклики (каждую секунду)
+// Автоклики
 setInterval(() => {
   if (autoClickers > 0) {
     balance += autoClickers;
@@ -90,4 +90,3 @@ setInterval(() => {
 }, 1000);
 
 updateBalance();
-
