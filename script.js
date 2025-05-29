@@ -18,32 +18,24 @@ clickBtn.addEventListener("click", () => {
   audio.play();
 });
 
-// Магазин
-const shopToggle = document.getElementById("shopToggle");
-const shopModal = document.getElementById("shopModal");
-const shopClose = document.getElementById("shopClose");
+// Навигация между экранами
+function switchScreen(targetId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(targetId).classList.add('active');
+}
 
-shopToggle.addEventListener("click", () => {
-  shopModal.style.display = "block";
+document.getElementById("openShop").addEventListener("click", () => {
+  switchScreen("shopScreen");
 });
 
-shopClose.addEventListener("click", () => {
-  shopModal.style.display = "none";
-});
-
-// Вкладки
-const tabs = document.querySelectorAll(".shop-tab");
-const contents = document.querySelectorAll(".shop-tab-content");
-
-tabs.forEach(tab => {
-  tab.addEventListener("click", () => {
-    contents.forEach(c => c.style.display = "none");
-    const target = document.getElementById(tab.dataset.tab);
-    if (target) target.style.display = "block";
+document.querySelectorAll(".shop-tab-btn, .back-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const target = btn.dataset.target;
+    switchScreen(target);
   });
 });
 
-// Бусты
+// Покупка бустов
 document.querySelectorAll(".shop-item").forEach(item => {
   item.addEventListener("click", () => {
     const cost = parseInt(item.getAttribute("data-cost"));
