@@ -1,70 +1,58 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <title>Мини Кликер</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 100px;
-      background: #f0f0f0;
-    }
-    button {
-      font-size: 28px;
-      padding: 20px 40px;
-      cursor: pointer;
-      border-radius: 10px;
-      border: none;
-      background: #4CAF50;
-      color: white;
-    }
-    #coins {
-      font-size: 36px;
-      margin-top: 20px;
-      color: #333;
-    }
-    #sendBtn {
-      margin-top: 40px;
-      background: #2196F3;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Abdul Crypto Clicker</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+            background: #0d1117;
+            color: #fff;
+            margin-top: 100px;
+        }
+        h1 {
+            font-size: 32px;
+        }
+        h2 {
+            margin: 20px 0;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            background-color: #1f6feb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:active {
+            background-color: #388bfd;
+        }
+    </style>
 </head>
 <body>
-  <h1>Мини Кликер</h1>
-  <button id="clickBtn">Кликни меня!</button>
-  <div id="coins">💰 Коины: 0</div>
-  <button id="sendBtn">Отправить баланс боту</button>
+    <h1>🚀 Abdul Crypto Clicker</h1>
+    <h2>Крипта: <span id="crypto-count">0</span></h2>
+    <button id="click-btn">Клик!</button>
 
-  <script>
-    let coins = 0;
-    const clickBtn = document.getElementById('clickBtn');
-    const coinsDiv = document.getElementById('coins');
-    const sendBtn = document.getElementById('sendBtn');
+    <script>
+        let count = 0;
 
-    clickBtn.onclick = () => {
-      coins++;
-      coinsDiv.textContent = `💰 Коины: ${coins}`;
-    };
+        const cryptoCount = document.getElementById("crypto-count");
+        const clickButton = document.getElementById("click-btn");
 
-    // Telegram Web Apps API доступен в window.Telegram.WebApp
-    const tg = window.Telegram?.WebApp;
+        clickButton.addEventListener("click", () => {
+            count++;
+            cryptoCount.innerText = count;
 
-    sendBtn.onclick = () => {
-      if (!tg) {
-        alert('Это приложение работает только внутри Telegram.');
-        return;
-      }
-      // Отправляем данные обратно боту
-      tg.sendData(JSON.stringify({coins: coins}));
-      // Можно закрыть Web App
-      tg.close();
-    };
+            // Отправить данные в Telegram боту
+            if (window.Telegram.WebApp) {
+                Telegram.WebApp.sendData(JSON.stringify({ clicks: count }));
+            }
+        });
 
-    // Можно кастомизировать интерфейс Telegram Web Apps
-    if (tg) {
-      tg.expand(); // расширить экран на весь размер
-    }
-  </script>
+        Telegram.WebApp.ready();
+    </script>
 </body>
 </html>
