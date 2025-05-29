@@ -1,46 +1,58 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AbdulaClick</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <div class="container">
+  <!-- 🟢 Главный экран -->
+  <div id="mainScreen" class="screen active">
     <h1>AbdulaClick</h1>
     <div class="balance" id="balance">0 💰</div>
 
     <button id="clickButton">
-      <img src="bearded.png" alt="Click Icon" class="click-icon">
+      <img src="bearded.png" alt="Click Icon" class="click-icon" />
     </button>
 
-    <button id="shopToggle">🛒 Магазин</button>
+    <button id="openShop" class="shop-btn">🛒 Магазин</button>
+  </div>
 
-    <div class="shop-modal" id="shopModal">
-      <div class="shop-header">
-        <button class="shop-tab" data-tab="boosts">Бусты</button>
-        <button class="shop-tab" data-tab="autoclicks">Автоклики</button>
-        <button class="shop-tab" data-tab="skins">Скинчики</button>
-        <button id="shopClose">⬅ Назад</button>
-      </div>
+  <!-- 🟡 Экран магазина -->
+  <div id="shopScreen" class="screen">
+    <h2>🛍️ Магазин</h2>
+    <button class="shop-tab-btn" data-target="boostsScreen">🚀 Бусты</button>
+    <button class="shop-tab-btn" data-target="autoclicksScreen">🤖 Автоклики</button>
+    <button class="shop-tab-btn" data-target="skinsScreen">🎨 Скинчики</button>
+    <br><br>
+    <button class="back-btn" data-target="mainScreen">⬅ Назад</button>
+  </div>
 
-      <div class="shop-content">
-        <div class="shop-tab-content" id="boosts">
-          <div class="shop-item" data-cost="10" data-power="1">+1 за 10 💰</div>
-          <div class="shop-item" data-cost="50" data-power="5">+5 за 50 💰</div>
-          <div class="shop-item" data-cost="200" data-power="20">+20 за 200 💰</div>
-        </div>
+  <!-- 🔵 Бусты -->
+  <div id="boostsScreen" class="screen">
+    <h2>🚀 Бусты</h2>
+    <div class="shop-item" data-cost="10" data-power="1">+1 за 10 💰</div>
+    <div class="shop-item" data-cost="50" data-power="5">+5 за 50 💰</div>
+    <div class="shop-item" data-cost="200" data-power="20">+20 за 200 💰</div>
+    <br>
+    <button class="back-btn" data-target="shopScreen">⬅ Назад</button>
+  </div>
 
-        <div class="shop-tab-content" id="autoclicks" style="display:none;">
-          <div class="autoclick-item" data-cost="1000" data-count="3">3 автоклика за 1000 💰</div>
-        </div>
+  <!-- 🔴 Автоклики -->
+  <div id="autoclicksScreen" class="screen">
+    <h2>🤖 Автоклики</h2>
+    <div class="autoclick-item" data-cost="1000" data-count="3">3 автоклика за 1000 💰</div>
+    <br>
+    <button class="back-btn" data-target="shopScreen">⬅ Назад</button>
+  </div>
 
-        <div class="shop-tab-content" id="skins" style="display:none;">
-          <p>Скоро будут скинчики!</p>
-        </div>
-      </div>
-    </div>
+  <!-- 🟣 Скинчики -->
+  <div id="skinsScreen" class="screen">
+    <h2>🎨 Скинчики</h2>
+    <p>Скоро будут скинчики!</p>
+    <br>
+    <button class="back-btn" data-target="shopScreen">⬅ Назад</button>
   </div>
 
   <script src="script.js"></script>
