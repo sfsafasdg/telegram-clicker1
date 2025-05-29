@@ -2,45 +2,42 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>AbdulaClick</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-  <div class="container" id="mainScreen">
-    <button id="openShopBtn" class="shop-open-btn">🛒 Магазин</button>
-    <h1>AbdulaClick</h1>
-    <div class="balance" id="balance">0 💰</div>
-
-    <button id="clickButton">
-      <img src="bearded.png" alt="Click Icon" class="click-icon" />
-    </button>
-  </div>
-
-  <div id="shopScreen" class="hidden">
-    <div class="shop-header">
-      <button id="closeShopBtn" class="back-btn">← Назад</button>
-      <div class="shop-tabs">
-        <button class="tab-btn active" data-tab="boosts">Бусты</button>
-        <button class="tab-btn" data-tab="autoclicks">Автоклики</button>
-        <button class="tab-btn" data-tab="skins">Скинчики</button>
-      </div>
+  <div class="container">
+    <div class="top-bar">
+      <h1>AbdulaClick</h1>
+      <button id="shopToggle">🛒</button>
     </div>
 
-    <div class="shop-content">
-      <div id="boosts" class="tab-content active">
-        <div class="shop-item" data-cost="100" data-power="1">+1 клик за 100 💰</div>
-        <div class="shop-item" data-cost="500" data-power="5">+5 кликов за 500 💰</div>
-        <div class="shop-item" data-cost="2000" data-power="20">+20 кликов за 2000 💰</div>
-      </div>
+    <div class="balance" id="balance">0 💰</div>
+    <button id="clickButton">
+      <img src="bearded.png" alt="Click Icon" class="click-icon"/>
+    </button>
 
-      <div id="autoclicks" class="tab-content">
-        <div class="shop-item" data-cost="1000" data-power="3">3 автоклика в секунду за 1000 💰</div>
-        <div class="shop-item" data-cost="5000" data-power="10">10 автокликов в секунду за 5000 💰</div>
+    <div class="shop-modal" id="shopModal">
+      <div class="shop-header">
+        <button class="tab" data-tab="boosts">Бусты</button>
+        <button class="tab" data-tab="autoclicks">Автоклики</button>
+        <button class="tab" data-tab="skins">Скинчики</button>
+        <button id="closeShop">❌</button>
       </div>
-
-      <div id="skins" class="tab-content">
-        <p style="padding: 10px; color: #888;">Скинчики появятся позже 😉</p>
+      <div class="shop-content">
+        <div class="tab-content" id="boosts">
+          <div class="shop-item" data-cost="10" data-power="1">+1 за 10 💰</div>
+          <div class="shop-item" data-cost="50" data-power="5">+5 за 50 💰</div>
+          <div class="shop-item" data-cost="200" data-power="20">+20 за 200 💰</div>
+        </div>
+        <div class="tab-content" id="autoclicks" style="display: none;">
+          <div class="shop-item" data-cost="1000" data-autoclick="1">+1 автоклик за 1000 💰</div>
+          <div class="shop-item" data-cost="3000" data-autoclick="3">+3 автоклика за 3000 💰</div>
+        </div>
+        <div class="tab-content" id="skins" style="display: none;">
+          <p>🔜 Скоро скины!</p>
+        </div>
       </div>
     </div>
   </div>
@@ -48,4 +45,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
