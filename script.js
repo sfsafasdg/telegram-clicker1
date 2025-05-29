@@ -7,13 +7,14 @@ const clickBtn = document.getElementById("clickButton");
 const audio = new Audio("click.mp3");
 
 const openShopBtn = document.getElementById("openShopBtn");
-const shopOverlay = document.getElementById("shopOverlay");
+const shopScreen = document.getElementById("shopScreen");
+const mainScreen = document.getElementById("mainScreen");
 const closeShopBtn = document.getElementById("closeShopBtn");
 
 const tabButtons = document.querySelectorAll(".tab-btn");
 const tabContents = document.querySelectorAll(".tab-content");
 
-// Обновляем баланс на экране
+// Обновляем баланс
 function updateBalance() {
   balanceElem.innerText = balance + " 💰";
 }
@@ -26,24 +27,24 @@ clickBtn.addEventListener("click", () => {
   audio.play();
 });
 
-// Открытие магазина
+// Открыть магазин — скрыть главный экран, показать магазин
 openShopBtn.addEventListener("click", () => {
-  shopOverlay.classList.remove("hidden");
+  mainScreen.classList.add("hidden");
+  shopScreen.classList.remove("hidden");
 });
 
-// Закрытие магазина
+// Закрыть магазин — показать главный экран, скрыть магазин
 closeShopBtn.addEventListener("click", () => {
-  shopOverlay.classList.add("hidden");
+  shopScreen.classList.add("hidden");
+  mainScreen.classList.remove("hidden");
 });
 
-// Переключение вкладок в магазине
+// Переключение вкладок магазина
 tabButtons.forEach(btn => {
   btn.addEventListener("click", () => {
-    // Активная кнопка
     tabButtons.forEach(b => b.classList.remove("active"));
     btn.classList.add("active");
 
-    // Показ нужного контента
     const tab = btn.getAttribute("data-tab");
     tabContents.forEach(tc => {
       if (tc.id === tab) {
@@ -55,7 +56,7 @@ tabButtons.forEach(btn => {
   });
 });
 
-// Логика покупки в магазине
+// Логика покупки
 const shopItems = document.querySelectorAll(".shop-item");
 
 shopItems.forEach(item => {
@@ -80,7 +81,7 @@ shopItems.forEach(item => {
   });
 });
 
-// Автоклики (каждую секунду добавляем баланс)
+// Автоклики (каждую секунду)
 setInterval(() => {
   if (autoClickers > 0) {
     balance += autoClickers;
@@ -89,3 +90,4 @@ setInterval(() => {
 }, 1000);
 
 updateBalance();
+
