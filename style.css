@@ -67,27 +67,18 @@ h1 {
   background: #00cc88;
 }
 
-/* Оверлей магазина */
-.shop-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #121212ee;
-  backdrop-filter: blur(6px);
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  box-sizing: border-box;
-  z-index: 100;
-}
-
+/* Скрытие элементов */
 .hidden {
-  display: none;
+  display: none !important;
 }
 
-/* Хедер магазина */
+/* Магазин */
+#shopScreen {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: left;
+}
+
 .shop-header {
   display: flex;
   align-items: center;
@@ -130,11 +121,9 @@ h1 {
 
 /* Контент вкладок */
 .shop-content {
-  flex: 1;
   overflow-y: auto;
-  text-align: left;
-  max-width: 400px;
-  margin: 0 auto;
+  max-height: 60vh;
+  padding-right: 10px;
 }
 
 .tab-content {
