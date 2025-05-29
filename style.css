@@ -2,17 +2,20 @@ body {
   background-color: #121212;
   color: #ffffff;
   font-family: 'Arial', sans-serif;
-  text-align: center;
+  margin: 0;
   padding: 20px;
+  text-align: center;
 }
 
-.container {
-  max-width: 400px;
-  margin: 0 auto;
+.screen {
+  display: none;
 }
 
-h1 {
-  font-size: 32px;
+.screen.active {
+  display: block;
+}
+
+h1, h2 {
   color: #00ffaa;
   text-shadow: 0 0 10px #00ffaa;
 }
@@ -29,7 +32,6 @@ h1 {
 #clickButton {
   background: none;
   border: none;
-  outline: none;
   margin: 20px 0;
 }
 
@@ -42,42 +44,13 @@ h1 {
   transform: scale(0.95);
 }
 
-#shopToggle {
+.shop-btn, .shop-tab-btn, .back-btn {
   background-color: #00ffaa;
   border: none;
-  padding: 8px 16px;
-  font-size: 18px;
+  padding: 10px 20px;
+  margin: 10px 5px;
+  font-size: 16px;
   border-radius: 8px;
-  cursor: pointer;
-}
-
-.shop-modal {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #1a1a1a;
-  border: 2px solid #00ffaa;
-  border-radius: 12px;
-  padding: 15px;
-  width: 90%;
-  max-width: 400px;
-  z-index: 10;
-  display: none;
-}
-
-.shop-header {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-}
-
-.shop-tab, #shopClose {
-  background-color: #00ffaa;
-  border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 14px;
   cursor: pointer;
   color: black;
 }
@@ -91,7 +64,6 @@ h1 {
   border-radius: 10px;
   font-size: 16px;
   cursor: pointer;
-  transition: all 0.2s ease;
 }
 
 .shop-item:hover, .autoclick-item:hover {
