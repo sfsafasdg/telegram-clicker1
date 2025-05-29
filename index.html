@@ -1,42 +1,43 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AbdulaClick</title>
-  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <div class="top-bar">
-      <h1>AbdulaClick</h1>
-      <button id="shopToggle">🛒</button>
-    </div>
-
+    <h1>AbdulaClick</h1>
     <div class="balance" id="balance">0 💰</div>
+
     <button id="clickButton">
-      <img src="bearded.png" alt="Click Icon" class="click-icon"/>
+      <img src="bearded.png" alt="Click Icon" class="click-icon">
     </button>
+
+    <button id="shopToggle">🛒 Магазин</button>
 
     <div class="shop-modal" id="shopModal">
       <div class="shop-header">
-        <button class="tab" data-tab="boosts">Бусты</button>
-        <button class="tab" data-tab="autoclicks">Автоклики</button>
-        <button class="tab" data-tab="skins">Скинчики</button>
-        <button id="closeShop">❌</button>
+        <button class="shop-tab" data-tab="boosts">Бусты</button>
+        <button class="shop-tab" data-tab="autoclicks">Автоклики</button>
+        <button class="shop-tab" data-tab="skins">Скинчики</button>
+        <button id="shopClose">⬅ Назад</button>
       </div>
+
       <div class="shop-content">
-        <div class="tab-content" id="boosts">
+        <div class="shop-tab-content" id="boosts">
           <div class="shop-item" data-cost="10" data-power="1">+1 за 10 💰</div>
           <div class="shop-item" data-cost="50" data-power="5">+5 за 50 💰</div>
           <div class="shop-item" data-cost="200" data-power="20">+20 за 200 💰</div>
         </div>
-        <div class="tab-content" id="autoclicks" style="display: none;">
-          <div class="shop-item" data-cost="1000" data-autoclick="1">+1 автоклик за 1000 💰</div>
-          <div class="shop-item" data-cost="3000" data-autoclick="3">+3 автоклика за 3000 💰</div>
+
+        <div class="shop-tab-content" id="autoclicks" style="display:none;">
+          <div class="autoclick-item" data-cost="1000" data-count="3">3 автоклика за 1000 💰</div>
         </div>
-        <div class="tab-content" id="skins" style="display: none;">
-          <p>🔜 Скоро скины!</p>
+
+        <div class="shop-tab-content" id="skins" style="display:none;">
+          <p>Скоро будут скинчики!</p>
         </div>
       </div>
     </div>
