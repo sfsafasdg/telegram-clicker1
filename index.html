@@ -5,36 +5,252 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AbdulaClick</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background-color: #0d0d0d;
+      color: #f0f0f0;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 32px;
+      color: #c084fc;
+      text-shadow: 0 0 15px #c084fc99;
+    }
+    .balance-box {
+      margin: 20px auto;
+      font-size: 24px;
+      background: #1a1a1a;
+      padding: 12px 20px;
+      border-radius: 14px;
+      box-shadow: 0 0 15px #6b21a8aa;
+      width: fit-content;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .balance-box img {
+      width: 24px;
+    }
+    #clickButton {
+      background: none;
+      border: none;
+      margin: 20px 0;
+    }
+    .click-icon {
+      width: 150px;
+      transition: transform 0.1s ease;
+    }
+    .click-icon:active {
+      transform: scale(0.95);
+    }
+    #openShop {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #6b21a8;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #openShop:hover {
+      background-color: #9333ea;
+    }
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    .hidden {
+      display: none;
+    }
+    .modal-content {
+      background: #1e1e1e;
+      border-radius: 16px;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .shop-tab {
+      display: block;
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      margin: 10px auto;
+      border: none;
+      border-radius: 10px;
+      width: 80%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .shop-tab:hover {
+      background-color: #6b21a8;
+    }
+    .shop-item {
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #2c2c2c;
+      border: 2px solid #9333ea;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #fff;
+    }
+    .shop-item:hover {
+      background-color: #9333ea;
+      color: #000;
+    }
+    .back {
+      background: none;
+      color: #aaa;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <h1>AbdulaClick</h1>
-    
     <div class="balance-box">
-      <span class="label">Баланс:</span>
-      <span id="balance">0</span>
-      <img src="coin.png" alt="Coin" class="coin-icon" />
+      <img src="coin.png" alt="Coin"> <span id="balance">0</span>
     </div>
-
     <button id="clickButton">
       <img src="bearded.png" alt="Click Icon" class="click-icon" />
     </button>
-
+    <br />
     <button id="openShop">🛒 Магазин</button>
+  </div>
 
-    <div id="shopModal" class="modal hidden">
-      <div class="modal-content">
-        <button class="back" id="closeShop">← Назад</button>
-        <h2>Магазин</h2>
-        <div class="tab-buttons">
-          <button data-tab="infinite">📈 Бесконечные бусты</button>
-          <button data-tab="temporary">⏱ Временные бусты</button>
-          <button data-tab="autoclick">⚙️ Автоклики</button>
-        </div>
-        <div id="shopContent"></div>
+  <div id="shopModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="back" id="closeShop">← Назад</button>
+      <h2>Магазин</h2>
+      <div id="shopMenu">
+        <button class="shop-tab" data-tab="infiniteBoosts">♾️ Бесконечные бусты</button>
+        <button class="shop-tab" data-tab="timeBoosts">⏱ Временные бусты</button>
+        <button class="shop-tab" data-tab="autoclickers">⚙️ Автоклики</button>
       </div>
+      <div id="shopContent"></div>
     </div>
   </div>
-  <script src="script.js"></script>
+
+  <script>
+    let balance = parseInt(localStorage.getItem("balance")) || 0;
+    let boost = parseInt(localStorage.getItem("boost")) || 1;
+    let autoclick = parseInt(localStorage.getItem("autoclick")) || 0;
+    let purchasedItems = JSON.parse(localStorage.getItem("purchasedItems")) || {};
+
+    const balanceElem = document.getElementById("balance");
+    const clickBtn = document.getElementById("clickButton");
+    const audio = new Audio("click.mp3");
+
+    function updateBalance() {
+      balanceElem.innerText = balance;
+      localStorage.setItem("balance", balance);
+      localStorage.setItem("boost", boost);
+      localStorage.setItem("autoclick", autoclick);
+      localStorage.setItem("purchasedItems", JSON.stringify(purchasedItems));
+    }
+
+    clickBtn.addEventListener("click", () => {
+      balance += boost;
+      updateBalance();
+      audio.currentTime = 0;
+      audio.play();
+    });
+
+    function createShopItems() {
+      const shopContent = document.getElementById("shopContent");
+      shopContent.innerHTML = "";
+
+      const tab = document.querySelector(".shop-tab.active")?.dataset.tab;
+      let items = [];
+
+      if (tab === "infiniteBoosts") {
+        for (let i = 1; i <= 10; i++) {
+          items.push({ id: `boost${i}`, label: `+${i} клик`, cost: i * 200, power: i });
+        }
+      } else if (tab === "timeBoosts") {
+        for (let i = 1; i <= 10; i++) {
+          items.push({ id: `tboost${i}`, label: `+${i} кликов на 30 секунд`, cost: i * 30, power: i });
+        }
+      } else if (tab === "autoclickers") {
+        for (let i = 5; i <= 50; i += 5) {
+          items.push({ id: `auto${i}`, label: `+${i} автокликов`, cost: i * 1000, power: i });
+        }
+      }
+
+      items.forEach(item => {
+        const el = document.createElement("div");
+        el.className = "shop-item";
+        el.innerText = `${item.label} — ${item.cost} 💰`;
+        el.onclick = () => {
+          if (purchasedItems[item.id]) {
+            alert("❌ У вас это уже приобретено");
+            return;
+          }
+          if (balance >= item.cost) {
+            balance -= item.cost;
+            if (tab === "infiniteBoosts") boost += item.power;
+            if (tab === "autoclickers") autoclick += item.power;
+            if (tab === "timeBoosts") {
+              boost += item.power;
+              setTimeout(() => {
+                boost -= item.power;
+                updateBalance();
+              }, 30000);
+            }
+            purchasedItems[item.id] = true;
+            updateBalance();
+            alert(`✅ Куплено: ${item.label}`);
+          } else {
+            alert("❌ Недостаточно монет");
+          }
+        };
+        shopContent.appendChild(el);
+      });
+    }
+
+    document.getElementById("openShop").addEventListener("click", () => {
+      document.getElementById("shopModal").classList.remove("hidden");
+    });
+
+    document.getElementById("closeShop").addEventListener("click", () => {
+      document.getElementById("shopModal").classList.add("hidden");
+    });
+
+    document.querySelectorAll(".shop-tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".shop-tab").forEach(btn => btn.classList.remove("active"));
+        tab.classList.add("active");
+        createShopItems();
+      });
+    });
+
+    if (autoclick > 0) {
+      setInterval(() => {
+        balance += autoclick;
+        updateBalance();
+      }, 1000);
+    }
+
+    updateBalance();
+  </script>
 </body>
 </html>
