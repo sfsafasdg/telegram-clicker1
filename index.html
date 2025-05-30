@@ -6,145 +6,30 @@
   <title>AbdulaClick</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    body {
-      background-color: #0d0d0d;
-      color: #f0f0f0;
-      font-family: 'Arial', sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-    .container {
-      max-width: 400px;
-      margin: 0 auto;
-    }
-    h1 {
-      font-size: 32px;
-      color: #c084fc;
-      text-shadow: 0 0 15px #c084fc99;
-    }
-    .balance-box {
-      margin: 20px auto;
-      font-size: 24px;
-      background: #1a1a1a;
-      padding: 12px 20px;
-      border-radius: 14px;
-      box-shadow: 0 0 15px #6b21a8aa;
-      width: fit-content;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-    }
-    .balance-box img {
-      width: 24px;
-    }
-    #clickButton {
-      background: none;
-      border: none;
-      margin: 20px 0;
-    }
-    .click-icon {
-      width: 150px;
-      transition: transform 0.1s ease;
-    }
-    .click-icon:active {
-      transform: scale(0.95);
-    }
-    #openShop, #openInventory {
-      margin-top: 10px;
-      padding: 10px 20px;
-      background-color: #6b21a8;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    #openShop:hover, #openInventory:hover {
-      background-color: #9333ea;
-    }
-    .modal {
+    /* ... существующие стили ... */
+
+    /* Стили для загрузочного экрана */
+    #loadingScreen {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: rgba(0,0,0,0.9);
+      background: #000;
       display: flex;
       align-items: center;
       justify-content: center;
-      z-index: 10;
+      z-index: 999;
     }
-    .hidden {
-      display: none;
-    }
-    .modal-content {
-      background: #1e1e1e;
-      border-radius: 16px;
-      padding: 20px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-    }
-    .shop-tab {
-      display: block;
-      background-color: #333;
-      color: #fff;
-      padding: 10px;
-      margin: 10px auto;
-      border: none;
-      border-radius: 10px;
-      width: 80%;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    .shop-tab:hover {
-      background-color: #6b21a8;
-    }
-    .shop-item {
-      margin: 10px 0;
-      padding: 10px;
-      background-color: #2c2c2c;
-      border: 2px solid #9333ea;
-      border-radius: 10px;
-      cursor: pointer;
-      color: #fff;
-    }
-    .shop-item:hover {
-      background-color: #9333ea;
-      color: #000;
-    }
-    .back {
-      background: none;
-      color: #aaa;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      text-align: left;
-      margin-bottom: 10px;
-    }
-    .inventory-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 10px 0;
-      background-color: #2c2c2c;
-      border-radius: 10px;
-      padding: 10px;
-    }
-    .sell-btn {
-      background-color: #dc2626;
-      border: none;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .sell-btn:hover {
-      background-color: #ef4444;
+    #loadingScreen img {
+      width: 200px;
     }
   </style>
 </head>
 <body>
+  <!-- Загрузочный экран -->
+  <div id="loadingScreen">
+    <img src="loading.gif" alt="Загрузка...">
+  </div>
+
   <div class="container">
     <h1>AbdulaClick</h1>
     <div class="balance-box">
@@ -158,52 +43,19 @@
     <button id="openInventory">📦 Приобретённые</button>
   </div>
 
-  <div id="shopModal" class="modal hidden">
-    <div class="modal-content">
-      <button class="back" id="closeShop">← Назад</button>
-      <h2>Магазин</h2>
-      <div id="shopMenu">
-        <button class="shop-tab" data-tab="infiniteBoosts">♾️ Бесконечные бусты</button>
-        <button class="shop-tab" data-tab="timeBoosts">⏱ Временные бусты</button>
-        <button class="shop-tab" data-tab="autoclickers">⚙️ Автоклики</button>
-      </div>
-      <div id="shopContent"></div>
-    </div>
-  </div>
-
-  <div id="inventoryModal" class="modal hidden">
-    <div class="modal-content">
-      <button class="back" id="closeInventory">← Назад</button>
-      <h2>Приобретённые</h2>
-      <div id="inventoryContent"></div>
-    </div>
-  </div>
+  <!-- ... другие модальные окна ... -->
 
   <script>
-    let balance = parseInt(localStorage.getItem("balance")) || 0;
-    let boost = parseInt(localStorage.getItem("boost")) || 1;
-    let autoclick = parseInt(localStorage.getItem("autoclick")) || 0;
-    let purchasedItems = JSON.parse(localStorage.getItem("purchasedItems")) || {};
-
-    const balanceElem = document.getElementById("balance");
-    const clickBtn = document.getElementById("clickButton");
-    const audio = new Audio("click.mp3");
-
-    function updateBalance() {
-      balanceElem.innerText = balance;
-      localStorage.setItem("balance", balance);
-      localStorage.setItem("boost", boost);
-      localStorage.setItem("autoclick", autoclick);
-      localStorage.setItem("purchasedItems", JSON.stringify(purchasedItems));
-    }
-
-    clickBtn.addEventListener("click", () => {
-      balance += boost;
-      updateBalance();
-      audio.currentTime = 0;
-      audio.play();
+    // Показ загрузки
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        document.getElementById("loadingScreen").style.display = "none";
+      }, 1500); // можно увеличить
     });
 
+    // ... существующий JS код ...
+
+    // ОБНОВЛЕНИЕ: обработка временных бустов
     function createShopItems() {
       const shopContent = document.getElementById("shopContent");
       shopContent.innerHTML = "";
@@ -217,7 +69,7 @@
         }
       } else if (tab === "timeBoosts") {
         for (let i = 1; i <= 10; i++) {
-          items.push({ id: `tboost${i}`, label: `+${i} кликов на 30 секунд`, cost: i * 30, power: i });
+          items.push({ id: `tboost${i}`, label: `+${i} кликов на 30 секунд`, cost: i * 30, power: i, temp: true });
         }
       } else if (tab === "autoclickers") {
         for (let i = 5; i <= 50; i += 5) {
@@ -230,23 +82,30 @@
         el.className = "shop-item";
         el.innerText = `${item.label} — ${item.cost} 💰`;
         el.onclick = () => {
-          if (purchasedItems[item.id]) {
+          const isTemp = item.temp;
+
+          // временные бусты можно покупать повторно
+          if (!isTemp && purchasedItems[item.id]) {
             alert("❌ У вас это уже приобретено");
             return;
           }
           if (balance >= item.cost) {
             if (!confirm(`Купить ${item.label} за ${item.cost} монет?`)) return;
             balance -= item.cost;
+
             if (tab === "infiniteBoosts") boost += item.power;
             if (tab === "autoclickers") autoclick += item.power;
+
             if (tab === "timeBoosts") {
               boost += item.power;
-              setTimeout(() => {
+              const timerId = setTimeout(() => {
                 boost -= item.power;
                 updateBalance();
               }, 30000);
+            } else {
+              purchasedItems[item.id] = item;
             }
-            purchasedItems[item.id] = item;
+
             updateBalance();
             alert(`✅ Куплено: ${item.label}`);
           } else {
@@ -257,61 +116,7 @@
       });
     }
 
-    function showInventory() {
-      const invContent = document.getElementById("inventoryContent");
-      invContent.innerHTML = "";
-      for (let key in purchasedItems) {
-        const item = purchasedItems[key];
-        if (key.startsWith("tboost")) continue; // не отображать временные
-        const div = document.createElement("div");
-        div.className = "inventory-item";
-        div.innerHTML = `<span>${item.label}</span><button class="sell-btn">Продать</button>`;
-        div.querySelector(".sell-btn").onclick = () => {
-          if (!confirm(`Продать ${item.label} за ${Math.floor(item.cost / 2)} монет?`)) return;
-          if (key.startsWith("boost")) boost -= item.power;
-          if (key.startsWith("auto")) autoclick -= item.power;
-          balance += Math.floor(item.cost / 2);
-          delete purchasedItems[key];
-          updateBalance();
-          showInventory();
-        };
-        invContent.appendChild(div);
-      }
-    }
-
-    document.getElementById("openShop").addEventListener("click", () => {
-      document.getElementById("shopModal").classList.remove("hidden");
-    });
-
-    document.getElementById("closeShop").addEventListener("click", () => {
-      document.getElementById("shopModal").classList.add("hidden");
-    });
-
-    document.getElementById("openInventory").addEventListener("click", () => {
-      document.getElementById("inventoryModal").classList.remove("hidden");
-      showInventory();
-    });
-
-    document.getElementById("closeInventory").addEventListener("click", () => {
-      document.getElementById("inventoryModal").classList.add("hidden");
-    });
-
-    document.querySelectorAll(".shop-tab").forEach(tab => {
-      tab.addEventListener("click", () => {
-        document.querySelectorAll(".shop-tab").forEach(btn => btn.classList.remove("active"));
-        tab.classList.add("active");
-        createShopItems();
-      });
-    });
-
-    if (autoclick > 0) {
-      setInterval(() => {
-        balance += autoclick;
-        updateBalance();
-      }, 1000);
-    }
-
-    updateBalance();
+    // ... остальной код ...
   </script>
 </body>
 </html>
