@@ -1,91 +1,91 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>AbdulaClick</title>
-  <link rel="stylesheet" href="style.css" />
   <style>
-    /* ... существующие стили ... */
-
-    /* Стили для загрузочного экрана */
-    #loadingScreen {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: #000;
+    body {
+      background-color: #121212;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 32px;
+      margin-bottom: 10px;
+    }
+    .balance-box {
       display: flex;
       align-items: center;
-      justify-content: center;
-      z-index: 999;
+      font-size: 24px;
+      margin-bottom: 10px;
     }
-    #loadingScreen img {
-      width: 200px;
+    .balance-box img {
+      width: 32px;
+      margin-right: 8px;
+    }
+    #clickBtn {
+      font-size: 24px;
+      padding: 16px 32px;
+      border: none;
+      border-radius: 12px;
+      background-color: #1e88e5;
+      color: white;
+      margin: 20px 0;
+    }
+    #shopBtn {
+      font-size: 18px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 12px;
+      background-color: #43a047;
+      color: white;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
-  <!-- Загрузочный экран -->
-  <div id="loadingScreen">
-    <img src="loading.gif" alt="Загрузка...">
+  <h1>AbdulaClick</h1>
+  <div class="balance-box">
+    <img src="coin.png" alt="Coin">
+    <span id="balance">0</span>
   </div>
-
-  <div class="container">
-    <h1>AbdulaClick</h1>
-    <div class="balance-box">
-      <img src="coin.png" alt="Coin"> <span id="balance">0</span>
-    </div>
-    <button id="clickButton">
-      <img src="bearded.png" alt="Click Icon" class="click-icon" />
-    </button>
-    <br />
-    <button id="openShop">🛒 Магазин</button>
-    <button id="openInventory">📦 Приобретённые</button>
+  <div>
+    🧪 Уровень: <span id="levelDisplay">1</span> | XP: <span id="xpDisplay">0</span>
   </div>
+  <button id="clickBtn">👊 Клик!</button>
+  <button id="shopBtn" onclick="showLeaderboard()">📊 Топ игроков</button>
 
-  <!-- ... другие модальные окна ... -->
+  <audio id="clickSound" src="click.mp3"></audio>
 
   <script>
-    // Показ загрузки
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        document.getElementById("loadingScreen").style.display = "none";
-      }, 1500); // можно увеличить
-    });
+    const clickBtn = document.getElementById("clickBtn");
+    const balanceDisplay = document.getElementById("balance");
+    const audio = document.getElementById("clickSound");
 
-    // ... существующий JS код ...
+    let balance = parseInt(localStorage.getItem("balance")) || 0;
+    let boost = parseInt(localStorage.getItem("boost")) || 1;
+    let xp = parseInt(localStorage.getItem("xp")) || 0;
+    let level = parseInt(localStorage.getItem("level")) || 1;
+    let achievements = JSON.parse(localStorage.getItem("achievements")) || {};
+    let playerName = localStorage.getItem("playerName") || prompt("Введите ваш ник:");
+    localStorage.setItem("playerName", playerName);
 
-    // ОБНОВЛЕНИЕ: обработка временных бустов
-    function createShopItems() {
-      const shopContent = document.getElementById("shopContent");
-      shopContent.innerHTML = "";
+    function updateBalance() {
+      balanceDisplay.textContent = balance;
+      localStorage.setItem("balance", balance);
+      localStorage.setItem("boost", boost);
+      updateLevelDisplay();
+      updateLeaderboard();
+      checkAchievements();
+    }
 
-      const tab = document.querySelector(".shop-tab.active")?.dataset.tab;
-      let items = [];
-
-      if (tab === "infiniteBoosts") {
-        for (let i = 1; i <= 10; i++) {
-          items.push({ id: `boost${i}`, label: `+${i} клик`, cost: i * 200, power: i });
-        }
-      } else if (tab === "timeBoosts") {
-        for (let i = 1; i <= 10; i++) {
-          items.push({ id: `tboost${i}`, label: `+${i} кликов на 30 секунд`, cost: i * 30, power: i, temp: true });
-        }
-      } else if (tab === "autoclickers") {
-        for (let i = 5; i <= 50; i += 5) {
-          items.push({ id: `auto${i}`, label: `+${i} автокликов`, cost: i * 1000, power: i });
-        }
-      }
-
-      items.forEach(item => {
-        const el = document.createElement("div");
-        el.className = "shop-item";
-        el.innerText = `${item.label} — ${item.cost} 💰`;
-        el.onclick = () => {
-          const isTemp = item.temp;
-
-          // временные бусты можно покупать повторно
-          if (!isTemp && purchasedItems[item.id]) {
+    function updateXP(amount) {
+      xp += amount;
             alert("❌ У вас это уже приобретено");
             return;
           }
