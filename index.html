@@ -2,15 +2,18 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AbdulaClick</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <h1>AbdulaClick</h1>
+    
     <div class="balance-box">
-      <span id="balance">0</span> 💰
+      <span class="label">Баланс:</span>
+      <span id="balance">0</span>
+      <img src="coin.png" alt="Coin" class="coin-icon" />
     </div>
 
     <button id="clickButton">
@@ -18,22 +21,20 @@
     </button>
 
     <button id="openShop">🛒 Магазин</button>
-  </div>
 
-  <!-- Модальное окно магазина -->
-  <div id="shopModal" class="modal hidden">
-    <div class="modal-content">
-      <button class="back" id="closeShop">← Назад</button>
-      <h2 id="shopTitle">Магазин</h2>
-      <div id="shopMenu">
-        <button class="shop-tab" data-tab="boosts">🔥 Бусты</button>
-        <button class="shop-tab" data-tab="autoclick">⚙️ Автоклики</button>
-        <button class="shop-tab" data-tab="skins">🎭 Скинчики</button>
+    <div id="shopModal" class="modal hidden">
+      <div class="modal-content">
+        <button class="back" id="closeShop">← Назад</button>
+        <h2>Магазин</h2>
+        <div class="tab-buttons">
+          <button data-tab="infinite">📈 Бесконечные бусты</button>
+          <button data-tab="temporary">⏱ Временные бусты</button>
+          <button data-tab="autoclick">⚙️ Автоклики</button>
+        </div>
+        <div id="shopContent"></div>
       </div>
-      <div id="shopContent"></div>
     </div>
   </div>
-
   <script src="script.js"></script>
 </body>
 </html>
