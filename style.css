@@ -19,19 +19,27 @@ h1 {
 
 .balance-box {
   margin: 20px auto;
-  font-size: 24px;
+  font-size: 22px;
   background: #1a1a1a;
   padding: 12px 20px;
   border-radius: 14px;
   box-shadow: 0 0 15px #6b21a8aa;
   width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.coin-icon {
+  width: 24px;
+  height: 24px;
 }
 
 #clickButton {
   background: none;
   border: none;
   margin: 20px 0;
-  cursor: pointer;
 }
 
 .click-icon {
@@ -52,13 +60,13 @@ h1 {
   font-size: 16px;
   cursor: pointer;
   transition: background 0.2s;
+  margin-bottom: 20px;
 }
 
 #openShop:hover {
   background-color: #9333ea;
 }
 
-/* Модальное окно */
 .modal {
   position: fixed;
   top: 0; left: 0;
@@ -81,25 +89,35 @@ h1 {
   width: 90%;
   max-width: 400px;
   text-align: center;
-  color: white;
 }
 
-.shop-tab {
-  display: block;
+.tab-buttons button {
+  margin: 5px;
+  padding: 8px 12px;
   background-color: #333;
-  color: #fff;
-  padding: 10px;
-  margin: 10px auto;
   border: none;
-  border-radius: 10px;
-  width: 80%;
-  font-size: 16px;
+  border-radius: 8px;
+  color: white;
   cursor: pointer;
-  transition: background-color 0.3s;
 }
 
-.shop-tab:hover {
+.tab-buttons button:hover {
   background-color: #6b21a8;
+}
+
+.shop-item {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: #2c2c2c;
+  border: 2px solid #9333ea;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.shop-item:hover {
+  background-color: #9333ea;
+  color: #000;
 }
 
 .back {
@@ -110,28 +128,4 @@ h1 {
   font-size: 16px;
   text-align: left;
   margin-bottom: 10px;
-}
-
-#shopContent {
-  margin-top: 20px;
-  min-height: 120px;
-  font-size: 18px;
-  color: #ddd;
-}
-
-/* Элементы магазина */
-.shop-item {
-  margin: 10px 0;
-  padding: 10px;
-  background-color: #2c2c2c;
-  border: 2px solid #9333ea;
-  border-radius: 10px;
-  cursor: pointer;
-  color: #fff;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.shop-item:hover {
-  background-color: #9333ea;
-  color: #000;
 }
