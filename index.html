@@ -6,7 +6,142 @@
   <title>AbdulaClick</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* ... [оставленный тобой CSS без изменений] ... */
+    body {
+      background-color: #0d0d0d;
+      color: #f0f0f0;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    h1 {
+      font-size: 32px;
+      color: #c084fc;
+      text-shadow: 0 0 15px #c084fc99;
+    }
+    .balance-box {
+      margin: 20px auto;
+      font-size: 24px;
+      background: #1a1a1a;
+      padding: 12px 20px;
+      border-radius: 14px;
+      box-shadow: 0 0 15px #6b21a8aa;
+      width: fit-content;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .balance-box img {
+      width: 24px;
+    }
+    #clickButton {
+      background: none;
+      border: none;
+      margin: 20px 0;
+    }
+    .click-icon {
+      width: 150px;
+      transition: transform 0.1s ease;
+    }
+    .click-icon:active {
+      transform: scale(0.95);
+    }
+    #openShop, #openInventory {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #6b21a8;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    #openShop:hover, #openInventory:hover {
+      background-color: #9333ea;
+    }
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10;
+    }
+    .hidden {
+      display: none;
+    }
+    .modal-content {
+      background: #1e1e1e;
+      border-radius: 16px;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+    .shop-tab {
+      display: block;
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      margin: 10px auto;
+      border: none;
+      border-radius: 10px;
+      width: 80%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .shop-tab:hover {
+      background-color: #6b21a8;
+    }
+    .shop-item {
+      margin: 10px 0;
+      padding: 10px;
+      background-color: #2c2c2c;
+      border: 2px solid #9333ea;
+      border-radius: 10px;
+      cursor: pointer;
+      color: #fff;
+    }
+    .shop-item:hover {
+      background-color: #9333ea;
+      color: #000;
+    }
+    .back {
+      background: none;
+      color: #aaa;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      text-align: left;
+      margin-bottom: 10px;
+    }
+    .inventory-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 10px 0;
+      background-color: #2c2c2c;
+      border-radius: 10px;
+      padding: 10px;
+    }
+    .sell-btn {
+      background-color: #dc2626;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .sell-btn:hover {
+      background-color: #ef4444;
+    }
   </style>
 </head>
 <body>
@@ -15,19 +150,14 @@
     <div class="balance-box">
       <img src="coin.png" alt="Coin"> <span id="balance">0</span>
     </div>
-    <div class="balance-box" style="font-size: 18px; box-shadow: 0 0 10px #9333ea;">
-      🧠 Уровень: <span id="level">1</span> | XP: <span id="xp">0</span>/<span id="xpNeeded">10</span>
-    </div>
     <button id="clickButton">
       <img src="bearded.png" alt="Click Icon" class="click-icon" />
     </button>
     <br />
     <button id="openShop">🛒 Магазин</button>
     <button id="openInventory">📦 Приобретённые</button>
-    <button id="openAchievements">🏆 Достижения</button>
   </div>
 
-  <!-- Модалки: магазин, инвентарь, достижения -->
   <div id="shopModal" class="modal hidden">
     <div class="modal-content">
       <button class="back" id="closeShop">← Назад</button>
@@ -49,62 +179,27 @@
     </div>
   </div>
 
-  <div id="achievementsModal" class="modal hidden">
-    <div class="modal-content">
-      <button class="back" id="closeAchievements">← Назад</button>
-      <h2>Достижения</h2>
-      <ul id="achievementsList" style="text-align: left;"></ul>
-    </div>
-  </div>
-
   <script>
     let balance = parseInt(localStorage.getItem("balance")) || 0;
     let boost = parseInt(localStorage.getItem("boost")) || 1;
     let autoclick = parseInt(localStorage.getItem("autoclick")) || 0;
     let purchasedItems = JSON.parse(localStorage.getItem("purchasedItems")) || {};
-    let xp = parseInt(localStorage.getItem("xp")) || 0;
-    let level = parseInt(localStorage.getItem("level")) || 1;
-    let achievements = JSON.parse(localStorage.getItem("achievements")) || [];
 
     const balanceElem = document.getElementById("balance");
-    const xpElem = document.getElementById("xp");
-    const levelElem = document.getElementById("level");
-    const xpNeededElem = document.getElementById("xpNeeded");
     const clickBtn = document.getElementById("clickButton");
     const audio = new Audio("click.mp3");
 
-    function xpNeededForLevel(lv) {
-      return 10 + lv * 10;
-    }
-
-    function gainXP(amount) {
-      xp += amount;
-      while (xp >= xpNeededForLevel(level)) {
-        xp -= xpNeededForLevel(level);
-        level++;
-        alert(`🎉 Уровень повышен! Теперь вы уровень ${level}`);
-        checkAchievements();
-      }
-      updateBalance();
-    }
-
     function updateBalance() {
       balanceElem.innerText = balance;
-      xpElem.innerText = xp;
-      levelElem.innerText = level;
-      xpNeededElem.innerText = xpNeededForLevel(level);
       localStorage.setItem("balance", balance);
       localStorage.setItem("boost", boost);
       localStorage.setItem("autoclick", autoclick);
       localStorage.setItem("purchasedItems", JSON.stringify(purchasedItems));
-      localStorage.setItem("xp", xp);
-      localStorage.setItem("level", level);
-      localStorage.setItem("achievements", JSON.stringify(achievements));
     }
 
     clickBtn.addEventListener("click", () => {
       balance += boost;
-      gainXP(1);
+      updateBalance();
       audio.currentTime = 0;
       audio.play();
     });
@@ -112,6 +207,7 @@
     function createShopItems() {
       const shopContent = document.getElementById("shopContent");
       shopContent.innerHTML = "";
+
       const tab = document.querySelector(".shop-tab.active")?.dataset.tab;
       let items = [];
 
@@ -121,7 +217,7 @@
         }
       } else if (tab === "timeBoosts") {
         for (let i = 1; i <= 10; i++) {
-          items.push({ id: `tboost${i}_${Date.now()}`, label: `+${i} кликов на 30 секунд`, cost: i * 30, power: i });
+          items.push({ id: `tboost${i}`, label: `+${i} кликов на 30 секунд`, cost: i * 30, power: i });
         }
       } else if (tab === "autoclickers") {
         for (let i = 5; i <= 50; i += 5) {
@@ -134,7 +230,7 @@
         el.className = "shop-item";
         el.innerText = `${item.label} — ${item.cost} 💰`;
         el.onclick = () => {
-          if (tab !== "timeBoosts" && purchasedItems[item.id]) {
+          if (purchasedItems[item.id]) {
             alert("❌ У вас это уже приобретено");
             return;
           }
@@ -166,7 +262,7 @@
       invContent.innerHTML = "";
       for (let key in purchasedItems) {
         const item = purchasedItems[key];
-        if (key.startsWith("tboost")) continue;
+        if (key.startsWith("tboost")) continue; // не отображать временные
         const div = document.createElement("div");
         div.className = "inventory-item";
         div.innerHTML = `<span>${item.label}</span><button class="sell-btn">Продать</button>`;
@@ -181,37 +277,6 @@
         };
         invContent.appendChild(div);
       }
-    }
-
-    function checkAchievements() {
-      const achList = [
-        { id: "clicker1", label: "Кликер I — Достигни уровня 5", condition: () => level >= 5 },
-        { id: "rich1", label: "Богач I — Накопи 1000 монет", condition: () => balance >= 1000 },
-        { id: "autobot", label: "Автобот — Купи первый автоклик", condition: () => autoclick >= 5 }
-      ];
-      achList.forEach(a => {
-        if (!achievements.includes(a.id) && a.condition()) {
-          achievements.push(a.id);
-          alert(`🏆 Достижение разблокировано: ${a.label}`);
-          updateBalance();
-        }
-      });
-    }
-
-    function showAchievements() {
-      const list = document.getElementById("achievementsList");
-      list.innerHTML = "";
-      const allAchievements = [
-        { id: "clicker1", label: "Кликер I — Достигни уровня 5" },
-        { id: "rich1", label: "Богач I — Накопи 1000 монет" },
-        { id: "autobot", label: "Автобот — Купи первый автоклик" }
-      ];
-      allAchievements.forEach(a => {
-        const li = document.createElement("li");
-        li.innerText = a.label;
-        li.style.color = achievements.includes(a.id) ? "#4ade80" : "#999";
-        list.appendChild(li);
-      });
     }
 
     document.getElementById("openShop").addEventListener("click", () => {
@@ -231,15 +296,6 @@
       document.getElementById("inventoryModal").classList.add("hidden");
     });
 
-    document.getElementById("openAchievements").addEventListener("click", () => {
-      document.getElementById("achievementsModal").classList.remove("hidden");
-      showAchievements();
-    });
-
-    document.getElementById("closeAchievements").addEventListener("click", () => {
-      document.getElementById("achievementsModal").classList.add("hidden");
-    });
-
     document.querySelectorAll(".shop-tab").forEach(tab => {
       tab.addEventListener("click", () => {
         document.querySelectorAll(".shop-tab").forEach(btn => btn.classList.remove("active"));
@@ -252,7 +308,6 @@
       setInterval(() => {
         balance += autoclick;
         updateBalance();
-        gainXP(1);
       }, 1000);
     }
 
