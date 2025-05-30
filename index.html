@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AbdulaClick</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -18,19 +18,20 @@
     </button>
 
     <button id="openShop">🛒 Магазин</button>
-  </div>
 
-  <!-- Модальное окно магазина -->
-  <div id="shopModal" class="modal hidden">
-    <div class="modal-content">
-      <button class="back" id="closeShop">← Назад</button>
-      <h2 id="shopTitle">Магазин</h2>
-      <div id="shopMenu">
-        <button class="shop-tab" data-tab="boosts">🔥 Бусты</button>
-        <button class="shop-tab" data-tab="autoclick">⚙️ Автоклики</button>
-        <button class="shop-tab" data-tab="skins">🎭 Скинчики</button>
+    <!-- Магазин -->
+    <div id="shopModal" class="modal hidden">
+      <div class="modal-content">
+        <button class="back" id="closeShop">← Назад</button>
+        <h2>Магазин</h2>
+        <div id="shopMenu">
+          <button class="shop-tab" data-tab="boosts">🔥 Бусты</button>
+          <button class="shop-tab" data-tab="autoclick">⚙️ Автоклики</button>
+          <button class="shop-tab" data-tab="skins">🎭 Скинчики</button>
+        </div>
+
+        <div id="shopContent"></div>
       </div>
-      <div id="shopContent"></div>
     </div>
   </div>
 
