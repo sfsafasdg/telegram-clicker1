@@ -50,7 +50,7 @@
     .click-icon:active {
       transform: scale(0.95);
     }
-    #openShop {
+    #openShop, #openOwned {
       margin-top: 10px;
       padding: 10px 20px;
       background-color: #6b21a8;
@@ -60,8 +60,11 @@
       font-size: 16px;
       cursor: pointer;
       transition: background 0.2s;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
     }
-    #openShop:hover {
+    #openShop:hover, #openOwned:hover {
       background-color: #9333ea;
     }
     .modal {
@@ -100,18 +103,18 @@
     .shop-tab:hover {
       background-color: #6b21a8;
     }
-    .shop-item {
+    .shop-item, .owned-item {
       margin: 10px 0;
       padding: 10px;
       background-color: #2c2c2c;
       border: 2px solid #9333ea;
       border-radius: 10px;
-      cursor: pointer;
       color: #fff;
     }
     .shop-item:hover {
       background-color: #9333ea;
       color: #000;
+      cursor: pointer;
     }
     .back {
       background: none;
@@ -121,6 +124,15 @@
       font-size: 16px;
       text-align: left;
       margin-bottom: 10px;
+    }
+    .sell-btn {
+      margin-top: 5px;
+      background-color: #9333ea;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -135,6 +147,7 @@
     </button>
     <br />
     <button id="openShop">🛒 Магазин</button>
+    <button id="openOwned">📦 Приобретённые</button>
   </div>
 
   <div id="shopModal" class="modal hidden">
@@ -147,6 +160,14 @@
         <button class="shop-tab" data-tab="autoclickers">⚙️ Автоклики</button>
       </div>
       <div id="shopContent"></div>
+    </div>
+  </div>
+
+  <div id="ownedModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="back" id="closeOwned">← Назад</button>
+      <h2>Приобретённые</h2>
+      <div id="ownedContent"></div>
     </div>
   </div>
 
@@ -216,7 +237,7 @@
                 updateBalance();
               }, 30000);
             }
-            purchasedItems[item.id] = true;
+            purchasedItems[item.id] = { label: item.label, cost: item.cost, power: item.power, tab };
             updateBalance();
             alert(`✅ Куплено: ${item.label}`);
           } else {
@@ -227,12 +248,41 @@
       });
     }
 
+    function createOwnedItems() {
+      const ownedContent = document.getElementById("ownedContent");
+      ownedContent.innerHTML = "";
+
+      Object.entries(purchasedItems).forEach(([id, item]) => {
+        const el = document.createElement("div");
+        el.className = "owned-item";
+        el.innerHTML = `${item.label} <br> <button class='sell-btn'>Продать за ${Math.floor(item.cost / 2)} 💰</button>`;
+        el.querySelector(".sell-btn").onclick = () => {
+          if (item.tab === "infiniteBoosts") boost -= item.power;
+          if (item.tab === "autoclickers") autoclick -= item.power;
+          delete purchasedItems[id];
+          balance += Math.floor(item.cost / 2);
+          updateBalance();
+          createOwnedItems();
+        };
+        ownedContent.appendChild(el);
+      });
+    }
+
     document.getElementById("openShop").addEventListener("click", () => {
       document.getElementById("shopModal").classList.remove("hidden");
     });
 
     document.getElementById("closeShop").addEventListener("click", () => {
       document.getElementById("shopModal").classList.add("hidden");
+    });
+
+    document.getElementById("openOwned").addEventListener("click", () => {
+      document.getElementById("ownedModal").classList.remove("hidden");
+      createOwnedItems();
+    });
+
+    document.getElementById("closeOwned").addEventListener("click", () => {
+      document.getElementById("ownedModal").classList.add("hidden");
     });
 
     document.querySelectorAll(".shop-tab").forEach(tab => {
